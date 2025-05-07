@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Exambro Style</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      background-color: #f3f3f3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 12px;
+      font-size: 14px;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .text {
+      color: #333;
+      margin: 0 6px;
+    }
+
+    .icon-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .refresh-btn {
+      background-color: #222;
+      margin: 0 6px;
+    }
+
+    .close-btn {
+      background-color: #e53935;
+      margin: 0 6px;
+    }
+
+    iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <span id="baterai" class="text">BATERAI: --%</span>
+    <button class="icon-btn refresh-btn" onclick="location.reload()">↻</button>
+    <button class="icon-btn close-btn" onclick="alert('Menutup halaman')">X</button>
+    <span id="jam" class="text">JAM: --:--:--</span>
+  </div>
+
+  <!-- Ganti link Google Form di bawah ini -->
+  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdjusO__nRIuEk3bARYYfu-qYZb43gMQaG7p8-LpSUtLEgeLQ/viewform?usp=dialog">
+    Memuat…
+  </iframe>
+
+  <script>
+    setInterval(() => {
+      const now = new Date();
+      const jam = String(now.getHours()).padStart(2, '0');
+      const menit = String(now.getMinutes()).padStart(2, '0');
+      const detik = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('jam').textContent = `JAM: ${jam}:${menit}:${detik}`;
+    }, 1000);
+
+    if (navigator.getBattery) {
+      navigator.getBattery().then(function(battery) {
+        function updateBattery() {
+          const persen = Math.round(battery.level * 100);
+          document.getElementById('baterai').textContent = `BATERAI: ${persen}%`;
+        }
+
+        updateBattery();
+        battery.addEventListener('levelchange', updateBattery);
+      });
+    } else {
+      document.getElementById('baterai').textContent = 'BATERAI: Tidak didukung';
+    }
+  </script>
+
+</body>
+</html>
